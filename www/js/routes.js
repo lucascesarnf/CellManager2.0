@@ -10,51 +10,59 @@ angular.module('app.routes', [])
     
   
 
-      .state('tabsController.reuniEs', {
+      .state('tabsController', {
     url: '/page2',
-    views: {
-      'tab1': {
-        templateUrl: 'templates/reuniEs.html',
-        controller: 'reuniEsCtrl'
-      }
-    }
+    templateUrl: 'templates/tabsController.html',
+    abstract:true
+  })
+
+  .state('login', {
+    url: '/page1',
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
   })
 
   .state('tabsController.membros', {
     url: '/page3',
     views: {
-      'tab2': {
+      'tab4': {
         templateUrl: 'templates/membros.html',
         controller: 'membrosCtrl'
       }
     }
   })
 
-  .state('tabsController', {
-    url: '/page1',
-    templateUrl: 'templates/tabsController.html',
-    abstract:true
+  .state('tabsController.reunioes', {
+    url: '/page4',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/reunioes.html',
+        controller: 'reunioesCtrl'
+      }
+    }
   })
 
-  .state('login', {
+  .state('tabsController.informacoes', {
     url: '/page5',
-    templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
+    views: {
+      'tab6': {
+        templateUrl: 'templates/informacoes.html',
+        controller: 'informacoesCtrl'
+      }
+    }
   })
 
-  .state('conta', {
+  .state('tabsController.conta', {
     url: '/page6',
-    templateUrl: 'templates/conta.html',
-    controller: 'contaCtrl'
+    views: {
+      'tab7': {
+        templateUrl: 'templates/conta.html',
+        controller: 'contaCtrl'
+      }
+    }
   })
 
-  .state('informaEs', {
-    url: '/page7',
-    templateUrl: 'templates/informaEs.html',
-    controller: 'informaEsCtrl'
-  })
-
-$urlRouterProvider.otherwise('/page5')
+$urlRouterProvider.otherwise('/page1')
 
   
 

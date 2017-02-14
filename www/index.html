@@ -4,18 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
-<script src="https://www.gstatic.com/firebasejs/3.6.8/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCL4wUvyaR2wzTfpCpGEgF2h6cDXrZjgUM",
-    authDomain: "cellmanager-a6723.firebaseapp.com",
-    databaseURL: "https://cellmanager-a6723.firebaseio.com",
-    storageBucket: "cellmanager-a6723.appspot.com",
-    messagingSenderId: "293240973451"
-  };
-  firebase.initializeApp(config);
-</script>
+
+    
+    
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -24,7 +15,20 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCL4wUvyaR2wzTfpCpGEgF2h6cDXrZjgUM",
+        authDomain: "cellmanager-a6723.firebaseapp.com",
+        databaseURL: "https://cellmanager-a6723.firebaseio.com",
+        storageBucket: "cellmanager-a6723.appspot.com",
+        messagingSenderId: "293240973451"
+      };
+      firebase.initializeApp(config);
+    </script>
     
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     
@@ -75,34 +79,12 @@
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
   <div>
-  <ion-side-menus enable-menu-with-back-views="false" data-componentid="side-menu21">
-    <ion-side-menu-content>
-      <ion-nav-bar class="bar-stable">
-        <ion-nav-back-button></ion-nav-back-button>
-        <ion-nav-buttons side="left">
-          <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
-        </ion-nav-buttons>
-      </ion-nav-bar>
-      <ion-nav-view></ion-nav-view>
-    </ion-side-menu-content>
-    <ion-side-menu side="left" id="side-menu21">
-      <ion-header-bar class="bar-stable">
-        <div class="title">User</div>
-      </ion-header-bar>
-      <ion-content ng-controller="userCtrl" padding="false" class="side-menu-left has-header ">
-        <ion-list id="user-list3" data-componentid="list3">
-          <ion-item class="item-icon-left positive" id="user-list-item16" ui-sref="tabsController.reuniEs" menu-close="" data-componentid="list-item16">
-            <i class="icon ion-log-in"></i>Celula</ion-item>
-          <ion-item class="item-icon-left positive" id="user-list-item18" ui-sref="conta" menu-close="" data-componentid="list-item18">
-            <i class="icon ion-android-options"></i>Conta</ion-item>
-          <ion-item class="item-icon-left positive" id="user-list-item15" ui-sref="informaEs" menu-close="" data-componentid="list-item15">
-            <i class="icon ion-information-circled"></i>Informações</ion-item>
-          <ion-item class="item-icon-left assertive" id="user-list-item17" data-componentid="list-item17">
-            <i class="icon ion-power"></i>Sair</ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-side-menu>
-  </ion-side-menus>
+  <div>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+  </div>
 </div>
   </body>
 </html>
