@@ -61,9 +61,12 @@ angular.module('app.routes', [])
       }
     }
   })
+  .state('signUp', {
+    url: '/page7',
+    templateUrl: 'templates/signUp.html',
+    controller: 'signUpCtrl'
+  })
 
 $urlRouterProvider.otherwise('/page1')
-
-  
 
 });

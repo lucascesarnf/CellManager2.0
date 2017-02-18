@@ -1,3 +1,37 @@
-<ion-view title="Membros" id="page3">
-  <ion-content padding="true" class="has-header"></ion-content>
+<ion-view cache-view="false" title="Membros" id="page3">
+		<ion-nav-buttons side="primary">
+		      <button class="button icon-right ion-plus-circled button-clear" style="color: white;" ng-click="add()">
+		      </button>
+		    </ion-nav-buttons>
+    <ion-content padding="true" class="has-header">
+    <ion-refresher
+    on-refresh="doRefresh()">
+  </ion-refresher>
+  <html>
+  <body> 
+    <d bar-light="true">
+      
+      <ion-list show-delete="data.showDelete">
+      
+        <ion-item ng-repeat="item in items" 
+                  item="item"
+                  ng-click="showMembro(item)" class="item-remove-animate">
+          {{ item.name |limitTo: 32 }}{{item.name.length > 30 ? '...' : ''}}<img ng-src={{statusMembro[item.status]}} width="7%" height="7%" align="right">
+          <ion-delete-button class="ion-minus-circled" 
+                             ng-click="onItemDelete(item)">
+          </ion-delete-button>
+          <ion-option-button class="button-calm"
+                             ng-click="edit(item)">
+            Edit
+          </ion-option-button>
+          <d ion-show></d>
+        </ion-item>
+
+      </ion-list>
+
+    </d>
+      
+  </body>
+</html>
+    </ion-content>
 </ion-view>
