@@ -3,28 +3,25 @@
 		      <button class="button icon-right ion-plus-circled button-clear" style="color: white;" ng-click="add()">
 		      </button>
 		    </ion-nav-buttons>
-    <ion-content padding="true" class="has-header">
-    <ion-refresher
-    on-refresh="doRefresh()">
-  </ion-refresher>
+    <ion-content padding="true" class="has-header" ng-click="close()">
   <html>
   <body> 
     <d bar-light="true">
       
-      <ion-list show-delete="data.showDelete">
+      <ion-list ng-init="init()">
       
         <ion-item ng-repeat="item in items" 
                   item="item"
                   ng-click="showMembro(item)" class="item-remove-animate">
           {{ item.name |limitTo: 32 }}{{item.name.length > 30 ? '...' : ''}}<img ng-src={{statusMembro[item.status]}} width="7%" height="7%" align="right">
-          <ion-delete-button class="ion-minus-circled" 
-                             ng-click="onItemDelete(item)">
-          </ion-delete-button>
           <ion-option-button class="button-calm"
                              ng-click="edit(item)">
             Edit
           </ion-option-button>
-          <d ion-show></d>
+          <ion-option-button class="button-assertive"
+                             ng-click="delete(item)">
+            Delete
+          </ion-option-button>
         </ion-item>
 
       </ion-list>

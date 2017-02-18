@@ -44,19 +44,21 @@ $scope.login = function(user) {
               template: errorMessage
                });
 	           }
-
-	           var alertPopup = $ionicPopup.alert({
-               title: 'Não foi possivel logar',
-               cssClass:'popup',
-              template: error 
-               });
 	             console.log(error);
 	             document.getElementById('quickstart-sign-in').disabled = false;
 	            // [END_EXCLUDE]
             }
         );
+      }else{
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+       title: 'Digite um email e senha válidos' ,
+       cssClass:'popup',
+       template: 'Entre com seu usuário e senha ou cadastre-se!' 
+     });
       }
     }else{
+      $ionicLoading.hide();
       var alertPopup = $ionicPopup.alert({
        title: 'Parece que você não digitou nada',
        cssClass:'popup',
@@ -67,21 +69,38 @@ $ionicLoading.hide();
 };
 }])
    
-.controller('membrosCtrl', ['$scope', '$stateParams','$ionicLoading','$state','$ionicPopup','fireBaseData',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('membrosCtrl', ['$scope', '$stateParams','$ionicLoading','$state','$ionicPopup','fireBaseData','safeApply','$firebaseArray','$ionicListDelegate',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,$ionicLoading,$state,$ionicPopup,fireBaseData) {
-$scope.data = {
-    showDelete: false
-  };
+function ($scope, $stateParams,$ionicLoading,$state,$ionicPopup,fireBaseData,safeApply,$firebaseArray,$ionicListDelegate) {
+  $scope.init= function(){
   $scope.statusMembro = [];
   $scope.statusMembro["Visitante"] = "img/Visitante2.png";
   $scope.statusMembro["Novato"] = "img/Novato2.png";
   $scope.statusMembro["Veterano"] = "img/Veterano2.png";
   $scope.statusMembro["Colíder"] = "img/Colider2.png";
-  $scope.items = fireBaseData.getMembros(); 
-  console.log($scope.items);
-//
+         //safeApply($scope); 
+         safeApply($scope, function() {
+         var user = firebase.auth().currentUser;
+         var membros = [];
+        if (user) {
+           var memberRef = fireBaseData.refUser().child(user.uid).child("membros");
+          $scope.items = $firebaseArray(memberRef);
+          //console.log($scope.items);
+          }
+          });
+        }
+$scope.memberRefresh = function(){
+safeApply($scope, function() {
+         var user = firebase.auth().currentUser;
+         var membros = [];
+        if (user) {
+           var memberRef = fireBaseData.refUser().child(user.uid).child("membros");
+          $scope.items = $firebaseArray(memberRef);
+          //console.log($scope.items);
+          }
+          });
+}
 $scope.doRefresh = function() {
    $scope.items = fireBaseData.getMembros(); 
    $scope.$broadcast('scroll.refreshComplete');
@@ -119,12 +138,13 @@ $scope.doRefresh = function() {
         }
         firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
+          console.log(res.datanasc);
            var memberRef = fireBaseData.refUser().child(user.uid).child("membros");
            var newMemberRef = memberRef.push();
            newMemberRef.set({
                name:res.name,
                tel:res.tel, 
-               datanasc:res.datanasc,
+               datanasc:res.datanasc.toString(),
                email:res.email, 
                end: res.end, 
                status: res.status
@@ -138,7 +158,7 @@ $scope.doRefresh = function() {
                status: res.status
             });*/
         // User is signed in.
-         $scope.items = fireBaseData.getMembros(); 
+         $scope.memberRefresh();
          } else {
            $ionicLoading.hide();
             var alertPopup = $ionicPopup.alert({
@@ -157,6 +177,10 @@ $scope.doRefresh = function() {
 };
 
     //************FIM ADD*********** 
+    //***********EDIT***************
+    $scope.close = function(){
+     $ionicListDelegate.closeOptionButtons();
+    };
 }])
    
 .controller('reunioesCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
