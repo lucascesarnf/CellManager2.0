@@ -1,3 +1,105 @@
 <ion-view title="Conta" id="page6">
-  <ion-content padding="true" class="has-header"></ion-content>
+ <ion-nav-buttons side="primary">
+   <button  style= "color:white;" class="button button-icon icon-right ion-compose" ng-click="modal.show()">
+   </button>
+   </ion-nav-buttons>
+  <ion-content padding="false" class="has-header" ng-init="init()">
+  	<form name="settingForm" class="list " id="settings-form">
+ 
+        <ion-list>
+ 
+          <!-- Profile Cover Page -->
+          <div class="profile-nav col-md-3">
+            <div class="panel">
+              <div class="user-heading round">
+               <!-- <a href="#">
+                  <img ng-src="{{&apos;img/fk/&apos;+ cell.photoURL +&apos;.jpg&apos;}}" >
+                </a>-->
+                <div class="spacer" style="width: 100px; height: 8px;"></div>
+                <h2 style="color: #000000; text-align: center;"><strong>{{cell.displayName}}</strong></h2>
+                <div class="spacer" style="width: 100px; height: 18px;"></div>
+              </div>
+            </div>
+          </div>
+      </ion-list>
+      <ion-list>
+		      <ion-list-header style="margin-left: 10px;" ><strong>Célula</strong></ion-list-header>
+		        <ion-item ng-click="show(cell.email)">
+		        <a class="icon icon-right ion-email"   style="margin-right: 10px;"></a><strong> Email: </strong>{{cell.email}}
+		        </ion-item>
+
+		        <ion-item ng-click="show(cell.adress)">				
+		           <a class="icon icon-right ion-ios-location"  style="margin-right: 10px;"></a><strong> Endereço: </strong><label for="checkbox" ng-if="cell.adress == undefined">Clique em editar e coloque um endereço</label>{{cell.adress}}
+		        </ion-item>
+		        <ion-item ng-click="show(cell.leader)">
+                   <a class="icon icon-right ion-ios-home"  style="margin-right: 10px;"></a><strong> Anfitrião: </strong>      <label for="checkbox" ng-if="cell.leader == undefined">Clique em editar e coloque o anfitrião</label>{{cell.host}}
+                </ion-item>
+        </ion-list>
+        <ion-list>
+         <ion-list-header style="margin-left: 10px;" ><strong>Líder</strong></ion-list-header>
+        <ion-item ng-click="show(cell.leader)">
+           <a class="icon icon-right ion-ios-contact"  style="margin-right: 10px;"></a><strong> Líder: </strong>      <label for="checkbox" ng-if="cell.leader == undefined">Clique em editar e coloque o lider</label>{{cell.leader}}
+        </ion-item>
+
+
+          <!--Address Header-->
+          <label ng-click="addManipulation()" class="item item-input  item ic-selected" >
+            <a class="icon icon-right ion-ios-contact" style="margin-right: 10px;" ></a> Colíder:
+            <i  class="icon icon-right ion-android-add-circle" style="font-size: larger ;margin-left: 69%;"></i>
+          </label>
+
+        <div ng-repeat="item in addresses"   >
+          <div class="list card" >
+            <div style="min-height: 30px;" class="item item-divider">
+                <a class="icon icon-right ion-ios-location"></a>
+                {{item.nickname}}
+                <div style="float: right;">
+                  <a ng-click="addManipulation(item)" class="icon icon-right ion-edit" style="font-size: 20px;"></a>
+                  <a ng-click="deleteAddress(item.$id)" class="icon icon-right ion-android-delete" style="font-size: 20px;"></a>
+                </div>
+            </div>
+            <div class="item item-body" >
+ 
+              <span> {{item.address}} </span>
+              <span>Pin: {{item.pin}}</span>
+              <span>Tel: {{item.phone}}</span>
+ 
+            </div>
+          </div>
+        </div>
+        </ion-list>
+        <ion-list>
+        <ion-list-header style="margin-left: 10px;" ><strong></strong></ion-list-header>
+        <ion-item ng-click="singOut()">
+        <i style="margin-right: 10px; color:red;" class="icon ion-power"></i>Sing Out
+        </ion-item>
+        </ion-list>
+ 
+      </form>
+      <!-- Modal -->
+      <script id="templates/modal.html" type="text/ng-template" >
+      <ion-modal-view >
+        <ion-header-bar class="bar bar-header bar-stable">
+          <h1 class="title">Dados da célula</h1>
+          <button class="button button-clear button-primary" style="color: white;" ng-click="modal.hide()"><Strong>Cancel</Strong></button>
+        </ion-header-bar>
+        <ion-content class="padding" >
+
+          <ion-list>
+          <ion-list-header><strong>Célula</strong></ion-list-header>
+           <label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data_cell.name" placeholder="{{cell.displayName}}"></label>
+           <label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data_cell.adress" placeholder="{{cell.adress}}" ></label>
+           <label class="item item-input"><span class="input-label">Anfitrião</span><input type="text" ng-model="data_cell.host" placeholder="{{cell.host}}"></label>
+          </ion-list>
+
+          <ion-list>
+          <ion-list-header><strong>Líder</strong></ion-list-header>
+           <label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data.name"></label><label class="item item-input"><span class="input-label">Telefone</span><input type="tel" ng-model="data.tel"></label><label class="item item-input"><span class="input-label">Nascimento</span><input type="date" ng-model="data.datanasc"></label><label class="item item-input"><span class="input-label">Email</span><input type="email" ng-model="data.email"></label><label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data.end"></label><label class="item item-input item-select"><div class="input-label">Status</div><select name="status" ng-model="data.status"><option selected>Visitante</option><option>Novato</option><option>Veterano</option><option>Colíder</option></select></label>
+           </ion-list>
+            <button class="button button-calm button-block" ng-click="addMember(data)">Create</button>
+          
+        </ion-content>
+      </ion-modal-view>
+    </script>
+  </ion-content>
 </ion-view>

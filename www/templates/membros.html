@@ -1,6 +1,6 @@
 <ion-view cache-view="false" title="Membros" id="page3">
 		<ion-nav-buttons side="primary">
-		      <button class="button icon-right ion-plus-circled button-clear" style="color: white;" ng-click="add()">
+		      <button class="button icon-right ion-plus-circled button-clear" style="color: white;" ng-click="modal.show()">
 		      </button>
 		    </ion-nav-buttons>
     <ion-content padding="true" class="has-header" ng-click="close()">
@@ -27,7 +27,21 @@
       </ion-list>
 
     </d>
-      
+    <!-- MODAL -->
+  <script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-stable">
+          <h1 class="title">Novo Membro</h1>
+          <button class="button button-clear button-primary" style="color: white;" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <div class="list">
+           <label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data.name"></label><label class="item item-input"><span class="input-label">Telefone</span><input type="tel" ng-model="data.tel"></label><label class="item item-input"><span class="input-label">Nascimento</span><input type="date" ng-model="data.datanasc"></label><label class="item item-input"><span class="input-label">Email</span><input type="email" ng-model="data.email"></label><label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data.end"></label><label class="item item-input item-select"><div class="input-label">Status</div><select name="status" ng-model="data.status"><option selected>Visitante</option><option>Novato</option><option>Veterano</option><option>Colíder</option></select></label>
+            <button class="button button-calm button-block" ng-click="addMember(data)">Create</button>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
   </body>
 </html>
     </ion-content>

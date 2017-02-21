@@ -2,30 +2,27 @@
   <ion-content padding="true" class="has-header">
   	<form name="signupForm" class="list " id="signup-form2">
             <ion-list class=" " id="signup-list3">
-
-                <div style="color: #555555;"><strong>Nome do usuário</strong></div>
-				 <label class="item item-input">
-				 <input type="text" ng-model="user.name">
-				 </label>
 			<div class="spacer" style="width: 300px; height: 18px;"></div>
                  <div style="color: #555555;"><strong>Nome da Célula</strong></div>
 				 <label class="item item-input">
-				 <input type="text" ng-model="user.cell">
+				 <input type="text" ng-model="user.name" placeholder="Nome do pequeno grupo">
 				 </label>
 			<div class="spacer" style="width: 300px; height: 18px;"></div>
 		         <div style="color: #555555;"><strong>Igreja</strong></div>
-				 <label class="item item-input">
-				 <input type="text" ng-model="user.church">
+		         <label style=" width: 100%;height:45px;" class="item item-input item-select">
+		         <select name="igreja" ng-model="user.church">
+				 <option selected value="IEQNP">IEQ Nova Ponte</option><option value="IEQURA">IEQ Araguari</option><option value="IEQUDI">IEQ Uberlandia</option>
+				 </select>
 				 </label>
 			<div class="spacer" style="width: 300px; height: 18px;"></div>
                  <div style="color: #555555;"><strong>Email</strong></div>
 				 <label class="item item-input">
-				 <input type="email" ng-model="user.email">
+				 <input type="email" ng-model="user.email" placeholder="Crie um email pra celula">
 				 </label>
 		    <div class="spacer" style="width: 300px; height: 18px;"></div>
 		         <div style="color: #555555;"><strong>Senha</strong></div>
 				 <label class="item item-input">
-				 <input type="{{inputType}}" ng-model="user.password">
+				 <input type="{{inputType}}" ng-model="user.password" placeholder="Crie uma senha">
 				 </label>
 				 <input style=" visibility: hidden;" type="checkbox" id="checkbox" ng-model="passwordCheckbox" ng-click="hideShowPassword()">
 				 <label for="checkbox" ng-if="passwordCheckbox"><i style="font-size: 20px;" class = "icon icon ion-ios-eye"></i></label>
