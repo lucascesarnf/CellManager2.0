@@ -12,6 +12,9 @@ function ($scope, $stateParams,$ionicLoading,$state,$ionicPopup,$ionicHistory) {
     $ionicLoading.show();
     firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    $ionicHistory.nextViewOptions({
+             disableBack: true
+             });
     $ionicLoading.hide();
     $state.go('tabsController.membros');
   }else{
@@ -129,7 +132,6 @@ $scope.hideShowPassword = function(){
              });
             $ionicLoading.hide();
              $state.go('tabsController.conta');
- 
         }, function (error) {
            $ionicLoading.hide();
          var alertPopup = $ionicPopup.alert({
@@ -223,78 +225,21 @@ $ionicModal.fromTemplateUrl('templates/modal.html', {
        $scope.modal.hide();
     }
   };
-  //***********ADD*************
-    $scope.add = function() {
-   $scope.data = {}
-   var myPopup = $ionicPopup.show({
-      template:'<label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data.name"></label><label class="item item-input"><span class="input-label">Telefone</span><input type="tel" ng-model="data.tel"></label><label class="item item-input"><span class="input-label">Nascimento</span><input type="date" ng-model="data.datanasc"></label><label class="item item-input"><span class="input-label">Email</span><input type="email" ng-model="data.email"></label><label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data.end"></label><label class="item item-input item-select"><div class="input-label">Status</div><select name="status" ng-model="data.status"><option selected>Visitante</option><option>Novato</option><option>Veterano</option><option>Colíder</option></select></label>', 
-      title: '<h3>Novo Membro</h3>',
-      subTitle: '<h5>Entre com os dados:<h5>',
-      scope: $scope,
-      buttons: [{
-         text: 'Cancel'
-      }, {
-         text: '<b>Save</b>',
-         type: 'button-calm',
-         onTap: function(e) {
-            if (!$scope.data.name) {
-               //don't allow the user to close unless he enters wifi password
-               e.preventDefault();
-            } else {
-               return $scope.data;
-            }
-         }
-      }, ]
-   });
-   myPopup.then(function(res) {
-      if (res) {  
-        if(res.status==null){
-          res.status = "Visitante";
-        }
-        if(res.datanasc==null){
-          res.datanasc = new Date();
-        }
-        firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          console.log(res.datanasc);
-           var memberRef = fireBaseData.refUser().child(user.uid).child("membros");
-           var newMemberRef = memberRef.push();
-           newMemberRef.set({
-               name:res.name,
-               tel:res.tel, 
-               datanasc:res.datanasc.toString(),
-               email:res.email, 
-               end: res.end, 
-               status: res.status
-            });/*
-          fireBaseData.refMember(user.uid).set({
-               name:res.name,
-               tel:res.tel, 
-               datanasc:res.datanasc,
-               email:res.email, 
-               end: res.end, 
-               status: res.status
-            });*/
-        // User is signed in.
-         $scope.memberRefresh();
-         } else {
-           $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-           title: 'Você não está logado' ,
+  //###########SHOW MEMBER#############
+   $scope.showMembro =function(item){
+      var date = new Date(item.datanasc);
+     $scope.FromDate = ('0' + date.getDate()).slice(-2)+ '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+      //****************************
+         var alertPopup = $ionicPopup.alert({
+           title: '<h3>Membro</h3>',
            cssClass:'popup',
-           template: 'Aí não dá nê' 
-           });
-        // No user is signed in.
-         }
-});
-        //$scope.items.push({name:res.name, tel:res.tel, datanasc:res.datanasc,email:res.email, end: res.end, status: res.status});
-        //Persistencia.salvar('Membros',$scope.items);        
-        //$scope.items = Persistencia.all('Membros');
-      } 
-   });
-};
+           template: '<strong>Nome: </strong>'+item.name +'<hr>'+ '<strong>Telefone: </strong>'+ item.tel+'<hr>'+ '<strong>Data de nascimento: </strong>'+ $scope.FromDate  +'<hr>'+'<strong>Email: </strong>'+item.email +'<hr>'+'<strong>Endereço: </strong>'+item.end +'<hr>'+'<strong>Status: </strong>'+item.status 
+         });
+         alertPopup.then(function(res) {
+         }); 
 
-    //************FIM ADD***********
+    }
+  //##################################
 
     //*************DELETE************************* 
     $scope.delete = function(item) {
@@ -322,17 +267,29 @@ $ionicModal.fromTemplateUrl('templates/modal.html', {
 function ($scope, $stateParams,$firebaseObject,safeApply,fireBaseData,$ionicHistory,$state,$ionicPopup,$ionicModal) {
    $scope.init= function(){
         $scope.undefined = "undefined";
-         var user = firebase.auth().currentUser;
+        firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          $scope.cell = user;
+            $scope.cell = user;
             $scope.cell_extras= $firebaseObject(fireBaseData.refUser().child(user.uid));
-            $scope.data_editable={};
-            $scope.data_editable.email=$scope.cell.email;  // For editing store it in local variable
-            $scope.data_editable.password="";
-            $scope.data_editable.password="";
+            //Acount
+            $scope.data_cell = $scope.cell;
+
+            $scope.data_extras = $scope.cell_extras;
+            //Cell
+            fireBaseData.refUser().child(user.uid).child("leader").on("value", function(snapshot) {
+            if(snapshot.val()!== null){
+            $scope.birthdayLeader = new Date(snapshot.val().datanasc);
+            $scope.FromDate = $scope.FromDate = ('0' + $scope.birthdayLeader.getDate()).slice(-2)+ '/' + ('0' + ($scope.birthdayLeader.getMonth() + 1)).slice(-2) + '/' + $scope.birthdayLeader.getFullYear();
+              }
+            },function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+            $scope.birthdayLeader = new Date();
+            $scope.FromDate = $scope.FromDate = ('0' + $scope.birthdayLeader.getDate()).slice(-2)+ '/' + ('0' + ($scope.birthdayLeader.getMonth() + 1)).slice(-2) + '/' + $scope.birthdayLeader.getFullYear();
+            });
             safeApply($scope);
           }
-        };
+        });
+      }
 
         $ionicModal.fromTemplateUrl('templates/modal.html', {
            scope: $scope
@@ -361,18 +318,68 @@ function ($scope, $stateParams,$firebaseObject,safeApply,fireBaseData,$ionicHist
 
         $scope.show=function(text){
           if(typeof text !== "undefined"){
-              $ionicPopup.confirm({
+              $ionicPopup.alert({
                   title: '<h3>'+$scope.cell.displayName+'</h3>',
                   content: text
                 }).then(function(res) {
                 });
             }else{
-              $ionicPopup.confirm({
+              $ionicPopup.alert({
                   title: '<h3>'+$scope.cell.displayName+'</h3>',
                   content: "Você ainda não colocou nada aqui, clique em editar e entre com os dados!"
                 }).then(function(res) {
                 });
             }
+        };
+   $scope.showDiretoria =function(item){
+       if(typeof item !== "undefined"){
+             //
+              var date = new Date(item.datanasc);
+              $scope.FromDate = ('0' + date.getDate()).slice(-2)+ '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+              var alertPopup = $ionicPopup.alert({
+               title: '<h3>Membro</h3>',
+               cssClass:'popup',
+               template: '<strong>Nome: </strong>'+item.name +'<hr>'+ '<strong>Telefone: </strong>'+ item.tel+'<hr>'+ '<strong>Data de nascimento: </strong>'+ $scope.FromDate  +'<hr>'+'<strong>Email: </strong>'+item.email +'<hr>'+'<strong>Endereço: </strong>'+item.end +'<hr>' 
+             });
+             alertPopup.then(function(res) {
+             }); 
+            //
+            }else{
+              $ionicPopup.alert({
+                  title: '<h3>'+$scope.cell.displayName+'</h3>',
+                  content: "Você ainda não colocou nada aqui, clique em editar e entre com os dados!"
+                }).then(function(res) {
+                });
+            }
+    }
+        $scope.upDateData= function(date,cell,cell_extras){
+         $ionicPopup.confirm({
+                  title: '<h3>Deseja Atualizar os dados?</h3>'
+                }).then(function(res) {
+                  if(res){
+                    currentDate = new Date();
+                    if(date != currentDate){
+                      if(cell_extras.leader != null){
+                      cell_extras.leader.datanasc = date;
+                      }
+                    }
+                  if(cell_extras.adress != null && cell_extras.host != null && cell_extras.leader != null){
+                  var user = firebase.auth().currentUser;
+                  fireBaseData.refUser().child(user.uid).update({
+                  adress:cell_extras.adress,
+                  host: cell_extras.host,
+                  leader: cell_extras.leader,
+                  });
+                 $scope.modal.hide();
+                 }else{
+                    //
+                    var alertPopup = $ionicPopup.alert({
+                     title: 'Você não atualizou nada',
+                     template: 'Preencha todos os campos para que você possa continuar'
+                     });
+                 }
+               }
+                });
         };
 
 }])

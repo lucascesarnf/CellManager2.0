@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "CellManager: An Ionic project",
   "dependencies": {
+    "angular-input-masks": "^2.5.0",
     "firebase": "^3.6.9",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",

@@ -28,17 +28,17 @@
 		        <a class="icon icon-right ion-email"   style="margin-right: 10px;"></a><strong> Email: </strong>{{cell.email}}
 		        </ion-item>
 
-		        <ion-item ng-click="show(cell.adress)">				
-		           <a class="icon icon-right ion-ios-location"  style="margin-right: 10px;"></a><strong> Endereço: </strong><label for="checkbox" ng-if="cell.adress == undefined">Clique em editar e coloque um endereço</label>{{cell.adress}}
+		        <ion-item ng-click="show(cell_extras.adress)">				
+		           <a class="icon icon-right ion-ios-location"  style="margin-right: 10px;"></a><strong> Endereço: </strong><label ng-if="cell_extras.adress == undefined">Clique em editar e coloque um endereço</label>{{cell_extras.adress}}
 		        </ion-item>
-		        <ion-item ng-click="show(cell.leader)">
-                   <a class="icon icon-right ion-ios-home"  style="margin-right: 10px;"></a><strong> Anfitrião: </strong>      <label for="checkbox" ng-if="cell.leader == undefined">Clique em editar e coloque o anfitrião</label>{{cell.host}}
+		        <ion-item ng-click="show(cell_extras.host)">
+                   <a class="icon icon-right ion-ios-home"  style="margin-right: 10px;"></a><strong> Anfitrião: </strong>      <label  ng-if="cell_extras.host == undefined">Clique em editar e coloque o anfitrião</label>{{cell_extras.host}}
                 </ion-item>
         </ion-list>
         <ion-list>
          <ion-list-header style="margin-left: 10px;" ><strong>Líder</strong></ion-list-header>
-        <ion-item ng-click="show(cell.leader)">
-           <a class="icon icon-right ion-ios-contact"  style="margin-right: 10px;"></a><strong> Líder: </strong>      <label for="checkbox" ng-if="cell.leader == undefined">Clique em editar e coloque o lider</label>{{cell.leader}}
+        <ion-item ng-click="showDiretoria(cell_extras.leader)">
+           <a class="icon icon-right ion-ios-contact"  style="margin-right: 10px;"></a><strong> Líder: </strong>      <label ng-if="cell_extras.leader == undefined">Clique em editar e coloque o lider</label>{{cell_extras.leader.name}}
         </ion-item>
 
 
@@ -69,7 +69,7 @@
         </div>
         </ion-list>
         <ion-list>
-        <ion-list-header style="margin-left: 10px;" ><strong></strong></ion-list-header>
+        <ion-list-header style="margin-left: 10px;"><strong></strong></ion-list-header>
         <ion-item ng-click="singOut()">
         <i style="margin-right: 10px; color:red;" class="icon ion-power"></i>Sing Out
         </ion-item>
@@ -84,19 +84,61 @@
           <button class="button button-clear button-primary" style="color: white;" ng-click="modal.hide()"><Strong>Cancel</Strong></button>
         </ion-header-bar>
         <ion-content class="padding" >
-
+           <ion-list>
+		          <ion-list-header><strong>Conta</strong></ion-list-header>
+		           <label class="item item-input"><span class="input-label">Email</span><input type="text" ng-model="data_cell.email" placeholder="{{data_cell.email}}"></label>
+		           <label class="item item-input"><span class="input-label">Senha</span><input type="password" ng-model="data_cell.password" placeholder="password" ></label>
+          </ion-list>
           <ion-list>
           <ion-list-header><strong>Célula</strong></ion-list-header>
-           <label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data_cell.name" placeholder="{{cell.displayName}}"></label>
-           <label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data_cell.adress" placeholder="{{cell.adress}}" ></label>
-           <label class="item item-input"><span class="input-label">Anfitrião</span><input type="text" ng-model="data_cell.host" placeholder="{{cell.host}}"></label>
+
+           <label class="item item-input">
+           <span class="input-label">Nome</span>
+           <input type="text" ng-model="data_cell.displayName" placeholder="{{data_cell.displayName}}">
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Endereço</span>
+           <input type="text" ng-model="data_extras.adress" placeholder="{{data_extras.adress}}" >
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Anfitrião</span>
+           <input type="text" ng-model="data_extras.host" placeholder="{{data_extras.host}}">
+           </label>
+
           </ion-list>
 
           <ion-list>
           <ion-list-header><strong>Líder</strong></ion-list-header>
-           <label class="item item-input"><span class="input-label">Nome</span><input type="text" ng-model="data.name"></label><label class="item item-input"><span class="input-label">Telefone</span><input type="tel" ng-model="data.tel"></label><label class="item item-input"><span class="input-label">Nascimento</span><input type="date" ng-model="data.datanasc"></label><label class="item item-input"><span class="input-label">Email</span><input type="email" ng-model="data.email"></label><label class="item item-input"><span class="input-label">Endereço</span><input type="text" ng-model="data.end"></label><label class="item item-input item-select"><div class="input-label">Status</div><select name="status" ng-model="data.status"><option selected>Visitante</option><option>Novato</option><option>Veterano</option><option>Colíder</option></select></label>
+
+           <label class="item item-input">
+           <span class="input-label">Nome</span>
+           <input type="text" ng-model="data_extras.leader.name" placeholder="{{data_extras.leader.name}}">
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Telefone</span>
+           <input type="tel" ng-model="data_extras.leader.tel" placeholder="{{data_extras.leader.tel}}">
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Aniversário</span>
+           <input type="date" ng-model="birthdayLeader">
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Email</span>
+           <input type="email" ng-model="data_extras.leader.email" placeholder="{{data_extras.leader.email}}">
+           </label>
+
+           <label class="item item-input">
+           <span class="input-label">Endereço</span>
+           <input type="text" ng-model="data_extras.leader.end" placeholder="{{data_extras.leader.end}}">
+           </label>
+           
            </ion-list>
-            <button class="button button-calm button-block" ng-click="addMember(data)">Create</button>
+            <button class="button button-calm button-block" ng-click="upDateData(birthdayLeader,data_cell,data_extras)">Update</button>
           
         </ion-content>
       </ion-modal-view>
